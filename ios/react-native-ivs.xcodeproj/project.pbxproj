@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		BA2F8D832658E25300B3BAA9 /* react_native_ivs.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2F8D822658E25300B3BAA9 /* react_native_ivs.swift */; };
+		BA2F8D8C2658E4FF00B3BAA9 /* PlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2F8D8B2658E4FF00B3BAA9 /* PlayerView.m */; };
+		BA2F8D8E2658E53C00B3BAA9 /* PlayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2F8D8D2658E53C00B3BAA9 /* PlayerManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +27,10 @@
 /* Begin PBXFileReference section */
 		BA2F8D7F2658E25300B3BAA9 /* libreact-native-ivs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libreact-native-ivs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA2F8D822658E25300B3BAA9 /* react_native_ivs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = react_native_ivs.swift; sourceTree = "<group>"; };
+		BA2F8D892658E4FE00B3BAA9 /* react-native-ivs-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "react-native-ivs-Bridging-Header.h"; sourceTree = "<group>"; };
+		BA2F8D8A2658E4FF00B3BAA9 /* PlayerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerView.h; sourceTree = "<group>"; };
+		BA2F8D8B2658E4FF00B3BAA9 /* PlayerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayerView.m; sourceTree = "<group>"; };
+		BA2F8D8D2658E53C00B3BAA9 /* PlayerManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayerManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,7 +47,11 @@
 		BA2F8D762658E25300B3BAA9 = {
 			isa = PBXGroup;
 			children = (
+				BA2F8D8D2658E53C00B3BAA9 /* PlayerManager.m */,
+				BA2F8D8A2658E4FF00B3BAA9 /* PlayerView.h */,
+				BA2F8D8B2658E4FF00B3BAA9 /* PlayerView.m */,
 				BA2F8D822658E25300B3BAA9 /* react_native_ivs.swift */,
+				BA2F8D892658E4FE00B3BAA9 /* react-native-ivs-Bridging-Header.h */,
 				BA2F8D802658E25300B3BAA9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -85,6 +95,7 @@
 				TargetAttributes = {
 					BA2F8D7E2658E25300B3BAA9 = {
 						CreatedOnToolsVersion = 12.5;
+						LastSwiftMigration = 1250;
 					};
 				};
 			};
@@ -112,6 +123,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				BA2F8D832658E25300B3BAA9 /* react_native_ivs.swift in Sources */,
+				BA2F8D8C2658E4FF00B3BAA9 /* PlayerView.m in Sources */,
+				BA2F8D8E2658E53C00B3BAA9 /* PlayerManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,10 +250,18 @@
 		BA2F8D872658E25300B3BAA9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "react-native-ivs-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -249,10 +270,17 @@
 		BA2F8D882658E25300B3BAA9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "react-native-ivs-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
