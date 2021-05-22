@@ -1,5 +1,5 @@
 //
-//  PlayerView.h
+//  RIVSPlayerView.h
 //  react-native-ivs
 //
 //  Created by Suhan Moon on 2021/05/22.
@@ -9,6 +9,8 @@
 #import <React/RCTView.h>
 #import <AmazonIVSPlayer/AmazonIVSPlayer.h>
 
-@interface PlayerView : IVSPlayerView
+@interface RIVSPlayerView : IVSPlayerView
+
+@property (strong, nonatomic) NSString *uri;
 
 @end
