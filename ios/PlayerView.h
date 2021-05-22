@@ -7,7 +7,8 @@
 
 #import <UIKit/UIKit.h>
 #import <React/RCTView.h>
+#import <AmazonIVSPlayer/AmazonIVSPlayer.h>
 
-@interface PlayerView : UIView
+@interface PlayerView : UIView<IVSPlayer.Delegate>
 
 @end
