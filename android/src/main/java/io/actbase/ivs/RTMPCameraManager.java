@@ -21,9 +21,4 @@ public class RTMPCameraManager extends ViewGroupManager<RTMPCameraView> {
         return view;
     }
 
-    @ReactProp(name = "frontCamera")
-    public void setFrontCamera(RTMPCameraView view, Boolean frontCamera) {
-        view.setFrontCamera(frontCamera);
-    }
-
 }
