@@ -9,8 +9,16 @@
 #import <React/RCTView.h>
 #import <AmazonIVSPlayer/AmazonIVSPlayer.h>
 
-@interface RIVSPlayerView : IVSPlayerView
+@interface RIVSPlayerView : UIView
 
 @property (strong, nonatomic) NSString *uri;
+@property (nonatomic) BOOL autoPlay;
+@property (strong, nonatomic) NSString *scaleMode;
+
+@property (nonatomic) BOOL liveLowLatencyEnabled;
+
+- (int)play;
+- (int)pause;
+
 
 @end

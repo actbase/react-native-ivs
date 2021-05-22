@@ -9,7 +9,7 @@
 
 @interface RIVSPlayerView()
 
-@property (strong,nonatomic) IVSPlayer *player;
+@property (strong,nonatomic) IVSPlayerView *screen;
 
 @end
 
@@ -19,19 +19,27 @@
 {
     self = [super init];
     if (self) {
-        _player = [[IVSPlayer alloc] init];
-        [self setBackgroundColor:UIColor.blackColor];
-        [self setBounds:CGRectMake(0, 0, 200, 200)];
-        [self setPlayer: _player];
-//    _np = [[NodePlayer alloc] initWithLicense:[RCTNodeMediaClient license]];
-//    [_np setNodePlayerDelegate:self];
-//    [_np setPlayerView:self];
-//    _autoplay = NO;
-//    _audioEnable = YES;
-//    _inputUrl = nil;
-//    _onChange = nil;
+        _screen = [[IVSPlayerView alloc] init];
+        [_screen setBounds: self.bounds];
+        [_screen setBackgroundColor: UIColor.blackColor];
+        [_screen setPlayer:[[IVSPlayer alloc] init]];
+        [_screen setVideoGravity: AVLayerVideoGravityResizeAspectFill];
+        [self addSubview:_screen];
     }
     return self;
+}
+
+- (void)setBounds:(CGRect)bounds {
+    [super setBounds:bounds];
+    if (_screen != nil) {
+        CGFloat screenScale = [[UIScreen mainScreen] scale];
+        [_screen setBounds: CGRectMake(
+                                       bounds.origin.x * screenScale,
+                                       bounds.origin.y * screenScale,
+                                       bounds.size.width * screenScale,
+                                       bounds.size.height * screenScale
+                                       )];
+    }
 }
 
 - (void)onEventCallback:(nonnull id)sender event:(int)event msg:(nonnull NSString*)msg {
@@ -39,16 +47,31 @@
 
 - (void)setUri:(NSString *)uri {
     _uri = uri;
-    [_player load:[NSURL URLWithString:uri]];
-    _player.delegate = self;
-
-    [self setPlayer: _player];
+    [_screen.player load:[NSURL URLWithString:uri]];
+    _screen.player.delegate = self;
 }
 
 - (void)player:(IVSPlayer *)player didChangeState:(IVSPlayerState)state {
     if (state == IVSPlayerStateReady) {
-        [player play];
+        [_screen.player play];
     }
+}
+
+- (void)setAutoPlay:(BOOL)autoPlay {
+  _autoPlay = autoPlay;
+}
+
+
+- (void)play {
+  [_screen.player play];
+}
+
+- (void)pause {
+  [_screen.player pause];
+}
+
+- (void)setLiveLowLatencyEnabled:(BOOL)enable {
+    [_screen.player setLiveLowLatencyEnabled: enable];
 }
 
 @end

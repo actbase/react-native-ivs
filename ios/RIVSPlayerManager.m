@@ -14,11 +14,11 @@
 #import "RIVSPlayerView.h"
 
 
-@interface PlayerManager : RCTViewManager
+@interface RIVSPlayerManager : RCTViewManager
 @end
 
-@implementation PlayerManager
-RCT_EXPORT_MODULE()
+@implementation RIVSPlayerManager
+RCT_EXPORT_MODULE(RIVSPlayer)
 
 - (UIView *)view {
   return [[RIVSPlayerView alloc] init];
