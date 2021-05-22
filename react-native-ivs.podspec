@@ -9,19 +9,18 @@ Pod::Spec.new do |s|
   s.description    = package['description']
   s.author         = package['author']
   s.homepage       = 'https://github.com/actbase/react-native-ivs'
+  s.license        = package['license']
 
   s.source         = { :git => "https://github.com/actbase/react-native-ivs.git", :tag => "master" }
   s.source_files   = "ios/*.{h,m,swift}"
+  s.platforms      = { :ios => "10.0" }
 
-  s.ios.deployment_target = "10.0"
-
-#   s.subspec "RCTNodeMediaClient" do |ss|
-#     ss.source_files  = "ios/RCTNodeMediaClient/*.{h,m}"
-#     s.static_framework = true
-#   end
+  s.frameworks     = 'MediaPlayer'
+  s.requires_arc   = true
 
   s.dependency "React"
-  s.dependency "NodeMediaClient", '2.9.5'
+#  s.dependency "NodeMediaClient", '2.9.5'
   s.dependency "AmazonIVSPlayer"
 
+  s.static_framework = true
 end
