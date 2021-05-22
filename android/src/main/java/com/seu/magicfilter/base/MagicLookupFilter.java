@@ -7,7 +7,7 @@ import com.seu.magicfilter.utils.MagicFilterFactory;
 import com.seu.magicfilter.utils.MagicFilterType;
 import com.seu.magicfilter.utils.OpenGLUtils;
 
-import net.ossrs.yasea.R;
+import io.actbase.ivs.R;
 
 public class MagicLookupFilter extends GPUImageFilter {
 

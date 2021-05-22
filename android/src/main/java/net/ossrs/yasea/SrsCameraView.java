@@ -146,9 +146,11 @@ public class SrsCameraView extends GLSurfaceView implements GLSurfaceView.Render
         this.mCamera.setPreviewCallback(previewCallback);
     }
 
-    public int[] setPreviewResolution(int width, int height) {                
-        mCamera = openCamera();
-        
+    public int[] setPreviewResolution(int width, int height) {
+        if (mCamera == null) {
+            mCamera = openCamera();
+        }
+
         mPreviewWidth = width;
         mPreviewHeight = height;
         Camera.Size rs = adaptPreviewResolution(mCamera.new Size(width, height));
@@ -390,10 +392,10 @@ public class SrsCameraView extends GLSurfaceView implements GLSurfaceView.Render
                     break;
                 }
             }
-            if (frontCamId != -1) {
-                mCamId = frontCamId;
-            } else if (backCamId != -1) {
+            if (backCamId != -1) {
                 mCamId = backCamId;
+            } else if (frontCamId != -1) {
+                mCamId = frontCamId;
             } else {
                 mCamId = 0;
             }
