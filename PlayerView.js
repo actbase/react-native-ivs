@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {
   Text,
   View,
@@ -9,8 +9,13 @@ import {
 const RCTPlayerView = requireNativeComponent('RIVSPlayer');
 
 const PlayerView = (props) => {
-  const { source, ...viewProps } = props;
-  return <RCTPlayerView {...props} />;
+  const { onChangeState, ...viewProps } = props;
+
+  const handleChangeState = useCallback(({ nativeEvent }) => {
+    onChangeState?.(nativeEvent?.code, nativeEvent?.msg);
+  }, []);
+
+  return <RCTPlayerView {...props} onChangeState={handleChangeState} />;
 };
 
 PlayerView.propTypes = ViewPropTypes;
