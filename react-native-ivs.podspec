@@ -15,7 +15,8 @@ Pod::Spec.new do |s|
   s.source_files   = "ios/*.{h,m}"
   s.platforms      = { :ios => "10.0" }
 
-#  s.frameworks     = 'MediaPlayer'
+  s.frameworks          = "VideoToolbox", "AudioToolbox","AVFoundation","Foundation","UIKit"
+  s.libraries           = "c++", "z"
   s.vendored_frameworks = "ios/AmazonIVSPlayer.xcframework"
 
   s.dependency "React"

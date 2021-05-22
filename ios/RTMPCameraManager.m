@@ -14,15 +14,37 @@
 #import "RTMPCameraView.h"
 
 
-@interface RIVSPlayerManager : RCTViewManager
+@interface RTMPCameraManager : RCTViewManager
 @end
 
-@implementation RIVSPlayerManager
+@implementation RTMPCameraManager
 RCT_EXPORT_MODULE(RTMPCamera)
 
 - (UIView *)view {
   return [[RTMPCameraView alloc] init];
 }
+
+RCT_EXPORT_VIEW_PROPERTY(frontCamera, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(uri, NSString)
+RCT_EXPORT_VIEW_PROPERTY(zoomScale, int)
+RCT_EXPORT_VIEW_PROPERTY(onChangeState, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onFailWithError, RCTBubblingEventBlock)
+
+
+RCT_EXPORT_METHOD(start:(nonnull NSNumber *)reactTag) {
+    [self.bridge.uiManager addUIBlock: ^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, RTMPCameraView *> *viewRegistry){
+        RTMPCameraView *view = viewRegistry[reactTag];
+        [view start];
+    }];
+}
+
+RCT_EXPORT_METHOD(stop:(nonnull NSNumber *)reactTag) {
+    [self.bridge.uiManager addUIBlock: ^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, RTMPCameraView *> *viewRegistry){
+        RTMPCameraView *view = viewRegistry[reactTag];
+        [view stop];
+    }];
+}
+
 
 @end
 

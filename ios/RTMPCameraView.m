@@ -6,75 +6,123 @@
 //
 
 #import "RTMPCameraView.h"
-#import "LFLiveKit.h"
 
-@interface RTMPCameraView()
+inline static NSString *formatedSpeed(float bytes, float elapsed_milli) {
+    if (elapsed_milli <= 0) {
+        return @"N/A";
+    }
 
+    if (bytes <= 0) {
+        return @"0 KB/s";
+    }
 
-@end
+    float bytes_per_sec = ((float)bytes) * 1000.f /  elapsed_milli;
+    if (bytes_per_sec >= 1000 * 1000) {
+        return [NSString stringWithFormat:@"%.2f MB/s", ((float)bytes_per_sec) / 1000 / 1000];
+    } else if (bytes_per_sec >= 1000) {
+        return [NSString stringWithFormat:@"%.1f KB/s", ((float)bytes_per_sec) / 1000];
+    } else {
+        return [NSString stringWithFormat:@"%ld B/s", (long)bytes_per_sec];
+    }
+}
+
 
 @implementation RTMPCameraView
 
-- (id)init
-{
-    self = [super init];
-    if (self) {
-        [self requestAccessForVideo];
-        [self requestAccessForAudio];
+- (instancetype)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
+        self.backgroundColor = [UIColor clearColor];
+        [self addSubview:self.containerView];
     }
     return self;
 }
 
-#pragma mark -- Public Method
-- (void)requestAccessForVideo {
-    __weak typeof(self) _self = self;
-    AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
-    switch (status) {
-    case AVAuthorizationStatusNotDetermined: {
-        // 许可对话没有出现，发起授权许可
-        [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
-                if (granted) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [_self.session setRunning:YES];
-                    });
-                }
-            }];
-        break;
-    }
-    case AVAuthorizationStatusAuthorized: {
-        // 已经开启授权，可继续
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [_self.session setRunning:YES];
-        });
-        break;
-    }
-    case AVAuthorizationStatusDenied:
-    case AVAuthorizationStatusRestricted:
-        // 用户明确地拒绝授权，或者相机设备无法访问
+- (void)setUri:(NSString *)uri {
+    _uri = uri;
+}
 
+- (void)setFrontCamera:(BOOL)frontCamera {
+    _frontCamera = frontCamera;
+    if (!_session) {
+        [self.session setRunning:YES];
+    } else {
+        _session.captureDevicePosition = frontCamera ? AVCaptureDevicePositionFront : AVCaptureDevicePositionBack;
+    }
+}
+
+- (void)setZoomScale:(NSInteger)zoomScale {
+    _zoomScale = zoomScale;
+    _session.zoomScale = zoomScale;
+}
+
+- (void)start {
+    LFLiveStreamInfo *stream = [LFLiveStreamInfo new];
+    stream.url = _uri;
+    [self.session startLive:stream];
+}
+
+- (void)stop {
+    [self.session stopLive];
+}
+
+#pragma mark -- LFStreamingSessionDelegate
+/** live status changed will callback */
+- (void)liveSession:(nullable LFLiveSession *)session liveStateDidChange:(LFLiveState)state {
+    switch (state) {
+    case LFLiveReady:
+        _onChangeState(@{@"code": [NSNumber numberWithInt: 0], @"msg": @"RTMPCameraReady"});
+        break;
+    case LFLivePending:
+        _onChangeState(@{@"code": [NSNumber numberWithInt: 1], @"msg": @"RTMPCameraPending"});
+        break;
+    case LFLiveStart:
+        _onChangeState(@{@"code": [NSNumber numberWithInt: 2], @"msg": @"RTMPCameraStart"});
+        break;
+    case LFLiveStop:
+        _onChangeState(@{@"code": [NSNumber numberWithInt: 3], @"msg": @"RTMPCameraStop"});
+        break;
+    case LFLiveError:
+        _onChangeState(@{@"code": [NSNumber numberWithInt: 4], @"msg": @"RTMPCameraError"});
         break;
     default:
         break;
     }
 }
 
-- (void)requestAccessForAudio {
-    AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
-    switch (status) {
-    case AVAuthorizationStatusNotDetermined: {
-        [AVCaptureDevice requestAccessForMediaType:AVMediaTypeAudio completionHandler:^(BOOL granted) {
-            }];
-        break;
+/** callback socket errorcode */
+- (void)liveSession:(nullable LFLiveSession *)session errorCode:(LFLiveSocketErrorCode)errorCode {
+    _onFailWithError(@{@"code": [NSNumber numberWithInt:errorCode], @"msg": @"" });
+}
+
+#pragma mark -- Getter Setter
+- (LFLiveSession *)session {
+    if (!_session) {
+        LFLiveAudioConfiguration *ac = [LFLiveAudioConfiguration defaultConfigurationForQuality:LFLiveAudioQuality_Medium];
+
+        LFLiveVideoConfiguration *vc = [LFLiveVideoConfiguration
+                                        defaultConfigurationForQuality: LFLiveVideoQuality_High3
+                                        outputImageOrientation: UIDeviceOrientationPortrait];
+
+        _session = [[LFLiveSession alloc] initWithAudioConfiguration:ac videoConfiguration:vc];
+        _session.beautyLevel = 0.0;
+        _session.beautyFace = NO;
+        _session.delegate = self;
+        _session.showDebugInfo = NO;
+        _session.preView = self;
+        _session.captureDevicePosition = _frontCamera == YES ? AVCaptureDevicePositionFront : AVCaptureDevicePositionBack;
+        _session.zoomScale = _zoomScale ? _zoomScale : 1;
     }
-    case AVAuthorizationStatusAuthorized: {
-        break;
+    return _session;
+}
+
+- (UIView *)containerView {
+    if (!_containerView) {
+        _containerView = [UIView new];
+        _containerView.frame = self.bounds;
+        _containerView.backgroundColor = [UIColor clearColor];
+        _containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     }
-    case AVAuthorizationStatusDenied:
-    case AVAuthorizationStatusRestricted:
-        break;
-    default:
-        break;
-    }
+    return _containerView;
 }
 
 @end
