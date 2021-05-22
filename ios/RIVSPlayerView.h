@@ -9,13 +9,18 @@
 #import <React/RCTView.h>
 #import <AmazonIVSPlayer/AmazonIVSPlayer.h>
 
-@interface RIVSPlayerView : UIView
+@interface RIVSPlayerView : UIView <IVSPlayerDelegate>
 
 @property (strong, nonatomic) NSString *uri;
 @property (nonatomic) BOOL autoPlay;
 @property (strong, nonatomic) NSString *scaleMode;
 
 @property (nonatomic) BOOL liveLowLatencyEnabled;
+
+@property (nonatomic, copy) RCTBubblingEventBlock onChangeState;
+@property (nonatomic, copy) RCTBubblingEventBlock onChangeVideoSize;
+@property (nonatomic, copy) RCTBubblingEventBlock onFailWithError;
+@property (nonatomic, copy) RCTBubblingEventBlock onOutputCue;
 
 - (int)play;
 - (int)pause;

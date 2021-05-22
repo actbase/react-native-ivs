@@ -25,6 +25,10 @@ RCT_EXPORT_MODULE(RIVSPlayer)
 }
 
 RCT_EXPORT_VIEW_PROPERTY(uri, NSString)
+RCT_EXPORT_VIEW_PROPERTY(onChangeState, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onChangeVideoSize, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onFailWithError, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onOutputCue, RCTBubblingEventBlock)
 
 @end
 
