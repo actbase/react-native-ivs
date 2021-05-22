@@ -32,7 +32,7 @@ const CameraView = React.forwardRef((props, ref) => {
   const { onChangeState, ...viewProps } = props;
 
   const handleChangeState = useCallback(({ nativeEvent }) => {
-    onChangeState?.(code, msg);
+    onChangeState?.(nativeEvent?.code, nativeEvent?.msg);
   }, []);
 
   return <RCTCameraView ref={camera} {...props} onChangeState={handleChangeState} />;
