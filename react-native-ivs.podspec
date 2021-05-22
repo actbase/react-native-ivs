@@ -19,8 +19,7 @@ Pod::Spec.new do |s|
   s.vendored_frameworks = "ios/AmazonIVSPlayer.xcframework"
 
   s.dependency "React"
-#  s.dependency "AmazonIVSPlayer"
-#  s.dependency "NodeMediaClient", '2.9.5'
+  s.dependency "LFLiveKit"
 
   s.static_framework = true
 end
