@@ -13,7 +13,6 @@ import java.util.Map;
 
 public class RIVSPlayerManager extends ViewGroupManager<RIVSPlayerView> {
 
-
     private static final int COMMAND_PAUSE_ID = 1;
     private static final String COMMAND_PAUSE_NAME = "pause";
     private static final int COMMAND_PLAY_ID = 2;
@@ -73,7 +72,7 @@ public class RIVSPlayerManager extends ViewGroupManager<RIVSPlayerView> {
         return MapBuilder.of(
                 COMMAND_PAUSE_NAME, COMMAND_PAUSE_ID,
                 COMMAND_PLAY_NAME, COMMAND_PLAY_ID
-                );
+        );
     }
 
     @Override
@@ -87,15 +86,5 @@ public class RIVSPlayerManager extends ViewGroupManager<RIVSPlayerView> {
                 break;
         }
     }
-
-//    RCT_EXPORT_VIEW_PROPERTY(uri, NSString)
-//    RCT_EXPORT_VIEW_PROPERTY(autoPlay, BOOL)
-//    RCT_EXPORT_VIEW_PROPERTY(scaleMode, NSString)
-//    RCT_EXPORT_VIEW_PROPERTY(liveLowLatencyEnabled, BOOL)
-//    RCT_EXPORT_VIEW_PROPERTY(muted, BOOL)
-//    RCT_EXPORT_VIEW_PROPERTY(onChangeState, RCTBubblingEventBlock)
-//    RCT_EXPORT_VIEW_PROPERTY(onChangeVideoSize, RCTBubblingEventBlock)
-//    RCT_EXPORT_VIEW_PROPERTY(onFailWithError, RCTBubblingEventBlock)
-//    RCT_EXPORT_VIEW_PROPERTY(onOutputCue, RCTBubblingEventBlock)
 
 }

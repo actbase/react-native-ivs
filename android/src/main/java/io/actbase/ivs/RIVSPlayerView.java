@@ -11,12 +11,10 @@ import com.amazonaws.ivs.player.Player;
 import com.amazonaws.ivs.player.PlayerException;
 import com.amazonaws.ivs.player.PlayerView;
 import com.amazonaws.ivs.player.Quality;
-import com.amazonaws.ivs.player.Releasable;
 import com.amazonaws.ivs.player.TextMetadataCue;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 public class RIVSPlayerView extends FrameLayout {
