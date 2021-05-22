@@ -3,13 +3,15 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BA2F8D832658E25300B3BAA9 /* react_native_ivs.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2F8D822658E25300B3BAA9 /* react_native_ivs.swift */; };
-		BA2F8D8C2658E4FF00B3BAA9 /* PlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2F8D8B2658E4FF00B3BAA9 /* PlayerView.m */; };
-		BA2F8D8E2658E53C00B3BAA9 /* PlayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2F8D8D2658E53C00B3BAA9 /* PlayerManager.m */; };
+		BA2F8D92265944D200B3BAA9 /* RIVSPlayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2F8D8F265944D200B3BAA9 /* RIVSPlayerManager.m */; };
+		BA2F8D93265944D200B3BAA9 /* RIVSPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2F8D91265944D200B3BAA9 /* RIVSPlayerView.m */; };
+		BA2F8D95265944E500B3BAA9 /* AmazonIVSPlayer.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA2F8D94265944E500B3BAA9 /* AmazonIVSPlayer.xcframework */; };
+		BA2F8D982659450700B3BAA9 /* RTMPCameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2F8D972659450700B3BAA9 /* RTMPCameraView.m */; };
+		BA2F8D9A2659451C00B3BAA9 /* RTMPCameraManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2F8D992659451C00B3BAA9 /* RTMPCameraManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,11 +28,13 @@
 
 /* Begin PBXFileReference section */
 		BA2F8D7F2658E25300B3BAA9 /* libreact-native-ivs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libreact-native-ivs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BA2F8D822658E25300B3BAA9 /* react_native_ivs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = react_native_ivs.swift; sourceTree = "<group>"; };
-		BA2F8D892658E4FE00B3BAA9 /* react-native-ivs-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "react-native-ivs-Bridging-Header.h"; sourceTree = "<group>"; };
-		BA2F8D8A2658E4FF00B3BAA9 /* PlayerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerView.h; sourceTree = "<group>"; };
-		BA2F8D8B2658E4FF00B3BAA9 /* PlayerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayerView.m; sourceTree = "<group>"; };
-		BA2F8D8D2658E53C00B3BAA9 /* PlayerManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayerManager.m; sourceTree = "<group>"; };
+		BA2F8D8F265944D200B3BAA9 /* RIVSPlayerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RIVSPlayerManager.m; sourceTree = "<group>"; };
+		BA2F8D90265944D200B3BAA9 /* RIVSPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIVSPlayerView.h; sourceTree = "<group>"; };
+		BA2F8D91265944D200B3BAA9 /* RIVSPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RIVSPlayerView.m; sourceTree = "<group>"; };
+		BA2F8D94265944E500B3BAA9 /* AmazonIVSPlayer.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AmazonIVSPlayer.xcframework; sourceTree = "<group>"; };
+		BA2F8D962659450700B3BAA9 /* RTMPCameraView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTMPCameraView.h; sourceTree = "<group>"; };
+		BA2F8D972659450700B3BAA9 /* RTMPCameraView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTMPCameraView.m; sourceTree = "<group>"; };
+		BA2F8D992659451C00B3BAA9 /* RTMPCameraManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTMPCameraManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA2F8D95265944E500B3BAA9 /* AmazonIVSPlayer.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,11 +52,13 @@
 		BA2F8D762658E25300B3BAA9 = {
 			isa = PBXGroup;
 			children = (
-				BA2F8D8D2658E53C00B3BAA9 /* PlayerManager.m */,
-				BA2F8D8A2658E4FF00B3BAA9 /* PlayerView.h */,
-				BA2F8D8B2658E4FF00B3BAA9 /* PlayerView.m */,
-				BA2F8D822658E25300B3BAA9 /* react_native_ivs.swift */,
-				BA2F8D892658E4FE00B3BAA9 /* react-native-ivs-Bridging-Header.h */,
+				BA2F8D992659451C00B3BAA9 /* RTMPCameraManager.m */,
+				BA2F8D962659450700B3BAA9 /* RTMPCameraView.h */,
+				BA2F8D972659450700B3BAA9 /* RTMPCameraView.m */,
+				BA2F8D8F265944D200B3BAA9 /* RIVSPlayerManager.m */,
+				BA2F8D90265944D200B3BAA9 /* RIVSPlayerView.h */,
+				BA2F8D91265944D200B3BAA9 /* RIVSPlayerView.m */,
+				BA2F8D94265944E500B3BAA9 /* AmazonIVSPlayer.xcframework */,
 				BA2F8D802658E25300B3BAA9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -122,9 +129,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BA2F8D832658E25300B3BAA9 /* react_native_ivs.swift in Sources */,
-				BA2F8D8C2658E4FF00B3BAA9 /* PlayerView.m in Sources */,
-				BA2F8D8E2658E53C00B3BAA9 /* PlayerManager.m in Sources */,
+				BA2F8D92265944D200B3BAA9 /* RIVSPlayerManager.m in Sources */,
+				BA2F8D9A2659451C00B3BAA9 /* RTMPCameraManager.m in Sources */,
+				BA2F8D93265944D200B3BAA9 /* RIVSPlayerView.m in Sources */,
+				BA2F8D982659450700B3BAA9 /* RTMPCameraView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
