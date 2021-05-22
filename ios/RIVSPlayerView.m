@@ -20,7 +20,7 @@
     self = [super init];
     if (self) {
         _screen = [[IVSPlayerView alloc] init];
-        [_screen setBounds: self.bounds];
+        [_screen setFrame: self.frame];
         [_screen setBackgroundColor: UIColor.blackColor];
         [_screen setPlayer:[[IVSPlayer alloc] init]];
         [_screen setVideoGravity: AVLayerVideoGravityResizeAspectFill];
@@ -29,15 +29,20 @@
     return self;
 }
 
+- (void)setFrame:(CGRect)frame {
+    [super setFrame:frame];
+    [_screen setFrame: frame];
+}
+
 - (void)setBounds:(CGRect)bounds {
     [super setBounds:bounds];
     if (_screen != nil) {
         CGFloat screenScale = [[UIScreen mainScreen] scale];
-        [_screen setBounds: CGRectMake(
-                                       bounds.origin.x * screenScale,
-                                       bounds.origin.y * screenScale,
-                                       bounds.size.width * screenScale,
-                                       bounds.size.height * screenScale
+        [_screen setFrame: CGRectMake(
+                                       0,
+                                       0,
+                                       bounds.size.width,
+                                       bounds.size.height
                                        )];
     }
 }
