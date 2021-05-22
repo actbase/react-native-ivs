@@ -25,10 +25,35 @@ RCT_EXPORT_MODULE(RIVSPlayer)
 }
 
 RCT_EXPORT_VIEW_PROPERTY(uri, NSString)
+RCT_EXPORT_VIEW_PROPERTY(autoPlay, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(scaleMode, NSString)
+RCT_EXPORT_VIEW_PROPERTY(liveLowLatencyEnabled, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(muted, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(onChangeState, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onChangeVideoSize, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onFailWithError, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onOutputCue, RCTBubblingEventBlock)
+
+
+RCT_EXPORT_METHOD(play:(nonnull NSNumber *)reactTag)
+{
+
+  [self.bridge.uiManager addUIBlock:
+   ^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, RIVSPlayerView *> *viewRegistry){
+      RIVSPlayerView *view = viewRegistry[reactTag];
+     [view play];
+   }];
+}
+
+RCT_EXPORT_METHOD(pause:(nonnull NSNumber *)reactTag)
+{
+
+  [self.bridge.uiManager addUIBlock:
+   ^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, RIVSPlayerView *> *viewRegistry){
+      RIVSPlayerView *view = viewRegistry[reactTag];
+     [view pause];
+   }];
+}
 
 @end
 

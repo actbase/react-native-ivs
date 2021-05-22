@@ -57,8 +57,6 @@
     }
 }
 
-- (void)onEventCallback:(nonnull id)sender event:(int)event msg:(nonnull NSString*)msg {
-}
 
 - (void)setUri:(NSString *)uri {
     _uri = uri;
@@ -121,6 +119,14 @@
   _autoPlay = autoPlay;
 }
 
+- (void)setLiveLowLatencyEnabled:(BOOL)enable {
+    [_screen.player setLiveLowLatencyEnabled: enable];
+}
+
+- (void)setMuted:(BOOL)muted {
+  _muted = muted;
+    [_screen.player setMuted:muted];
+}
 
 - (void)play {
   [_screen.player play];
@@ -128,10 +134,6 @@
 
 - (void)pause {
   [_screen.player pause];
-}
-
-- (void)setLiveLowLatencyEnabled:(BOOL)enable {
-    [_screen.player setLiveLowLatencyEnabled: enable];
 }
 
 @end

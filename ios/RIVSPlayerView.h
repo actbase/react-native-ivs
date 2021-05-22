@@ -16,6 +16,7 @@
 @property (strong, nonatomic) NSString *scaleMode;
 
 @property (nonatomic) BOOL liveLowLatencyEnabled;
+@property (nonatomic) BOOL muted;
 
 @property (nonatomic, copy) RCTBubblingEventBlock onChangeState;
 @property (nonatomic, copy) RCTBubblingEventBlock onChangeVideoSize;
