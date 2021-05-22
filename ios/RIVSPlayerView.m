@@ -74,10 +74,12 @@
 }
 
 - (void)player:(IVSPlayer *)player didChangeVideoSize:(CGSize)videoSize {
-    _onChangeVideoSize(@{
-        @"code": [NSNumber numberWithInt:0],
-        @"width": [NSNumber numberWithFloat:videoSize.width],
-        @"height": [NSNumber numberWithFloat:videoSize.height] });
+    if (_onChangeVideoSize) {
+        _onChangeVideoSize(@{
+            @"code": [NSNumber numberWithInt:0],
+            @"width": [NSNumber numberWithFloat:videoSize.width],
+            @"height": [NSNumber numberWithFloat:videoSize.height] });
+    }
 }
 
 - (void)player:(IVSPlayer *)player didChangeState:(IVSPlayerState)state {
