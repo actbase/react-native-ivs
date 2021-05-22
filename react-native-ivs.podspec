@@ -17,9 +17,10 @@ Pod::Spec.new do |s|
 
   s.frameworks     = 'MediaPlayer'
   s.requires_arc   = true
-  s.ios.vendored_frameworks = "ios/AmazonIVSPlayer.xcframework"
+#  s.vendored_frameworks = "ios/AmazonIVSPlayer.xcframework"
 
   s.dependency "React"
+  s.dependency "AmazonIVSPlayer"
 #  s.dependency "NodeMediaClient", '2.9.5'
 
   s.static_framework = true
