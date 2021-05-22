@@ -7,12 +7,20 @@
 
 #import "PlayerView.h"
 
+@interface PlayerView()
+
+@property (strong,nonatomic) IVSPlayer *player;
+
+@end
+
 @implementation PlayerView
 
 - (id)init
 {
     self = [super init];
     if (self) {
+        _player = [[IVSPlayer alloc] init];
+        self.player = _player;
 //    _np = [[NodePlayer alloc] initWithLicense:[RCTNodeMediaClient license]];
 //    [_np setNodePlayerDelegate:self];
 //    [_np setPlayerView:self];

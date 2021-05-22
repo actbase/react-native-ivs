@@ -9,6 +9,6 @@
 #import <React/RCTView.h>
 #import <AmazonIVSPlayer/AmazonIVSPlayer.h>
 
-@interface PlayerView : UIView<IVSPlayer.Delegate>
+@interface PlayerView : IVSPlayerView
 
 @end

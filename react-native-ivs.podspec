@@ -12,11 +12,10 @@ Pod::Spec.new do |s|
   s.license        = package['license']
 
   s.source         = { :git => "https://github.com/actbase/react-native-ivs.git", :tag => "master" }
-  s.source_files   = "ios/*.{h,m,swift}"
+  s.source_files   = "ios/*.{h,m}"
   s.platforms      = { :ios => "10.0" }
 
-  s.frameworks     = 'MediaPlayer'
-  s.requires_arc   = true
+#  s.frameworks     = 'MediaPlayer'
   s.vendored_frameworks = "ios/AmazonIVSPlayer.xcframework"
 
   s.dependency "React"
