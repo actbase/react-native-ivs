@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.homepage       = 'https://github.com/actbase/react-native-ivs'
   s.source       = { :git => "https://github.com/actbase/react-native-ivs.git", :tag => "master" }
 
-  s.ios.deployment_target = "8.0"
+  s.ios.deployment_target = "10.0"
 
 #   s.subspec "RCTNodeMediaClient" do |ss|
 #     ss.source_files  = "ios/RCTNodeMediaClient/*.{h,m}"
