@@ -9,7 +9,9 @@ Pod::Spec.new do |s|
   s.description    = package['description']
   s.author         = package['author']
   s.homepage       = 'https://github.com/actbase/react-native-ivs'
-  s.source       = { :git => "https://github.com/actbase/react-native-ivs.git", :tag => "master" }
+
+  s.source         = { :git => "https://github.com/actbase/react-native-ivs.git", :tag => "master" }
+  s.source_files   = "ios/*.{h,m,swift}"
 
   s.ios.deployment_target = "10.0"
 
