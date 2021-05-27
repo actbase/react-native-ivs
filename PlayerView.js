@@ -19,7 +19,7 @@ const PlayerView = (props) => {
   }, []);
 
   const handleOutputCue = useCallback(({ nativeEvent }) => {
-    onOutputCue?.(nativeEvent?.code);
+    onOutputCue?.(nativeEvent);
   }, []);
 
   return <RCTPlayerView {...props} onChangeState={handleChangeState} onChangeVideoSize={handleChangeVideoSize} onFailWithError={handleFailWithError} onOutputCue={handleOutputCue} />;
