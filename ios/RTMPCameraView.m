@@ -70,18 +70,23 @@ inline static NSString *formatedSpeed(float bytes, float elapsed_milli) {
 - (void)liveSession:(nullable LFLiveSession *)session liveStateDidChange:(LFLiveState)state {
     switch (state) {
     case LFLiveReady:
+        NSLog(@"%@", @"RTMPCameraReady");
         _onChangeState(@{@"code": [NSNumber numberWithInt: 0], @"msg": @"RTMPCameraReady"});
         break;
     case LFLivePending:
+        NSLog(@"%@", @"RTMPCameraPending");
         _onChangeState(@{@"code": [NSNumber numberWithInt: 1], @"msg": @"RTMPCameraPending"});
         break;
     case LFLiveStart:
+        NSLog(@"%@", @"RTMPCameraStart");
         _onChangeState(@{@"code": [NSNumber numberWithInt: 2], @"msg": @"RTMPCameraStart"});
         break;
     case LFLiveStop:
+        NSLog(@"%@", @"RTMPCameraStop");
         _onChangeState(@{@"code": [NSNumber numberWithInt: 3], @"msg": @"RTMPCameraStop"});
         break;
     case LFLiveError:
+        NSLog(@"%@", @"RTMPCameraError");
         _onChangeState(@{@"code": [NSNumber numberWithInt: 4], @"msg": @"RTMPCameraError"});
         break;
     default:
@@ -91,6 +96,7 @@ inline static NSString *formatedSpeed(float bytes, float elapsed_milli) {
 
 /** callback socket errorcode */
 - (void)liveSession:(nullable LFLiveSession *)session errorCode:(LFLiveSocketErrorCode)errorCode {
+    NSLog(@"%@", [NSNumber numberWithInt:errorCode]);
     _onFailWithError(@{@"code": [NSNumber numberWithInt:errorCode], @"msg": @"" });
 }
 
@@ -100,7 +106,7 @@ inline static NSString *formatedSpeed(float bytes, float elapsed_milli) {
         LFLiveAudioConfiguration *ac = [LFLiveAudioConfiguration defaultConfigurationForQuality:LFLiveAudioQuality_Medium];
 
         LFLiveVideoConfiguration *vc = [LFLiveVideoConfiguration
-                                        defaultConfigurationForQuality: LFLiveVideoQuality_High3
+                                        defaultConfigurationForQuality: LFLiveVideoQuality_Medium1
                                         outputImageOrientation: UIDeviceOrientationPortrait];
 
         _session = [[LFLiveSession alloc] initWithAudioConfiguration:ac videoConfiguration:vc];
@@ -126,3 +132,4 @@ inline static NSString *formatedSpeed(float bytes, float elapsed_milli) {
 }
 
 @end
+

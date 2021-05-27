@@ -27,10 +27,10 @@
         [self addSubview:_screen];
 
         NSNotificationCenter *defaultCenter = NSNotificationCenter.defaultCenter;
-        [defaultCenter addObserver:self
-                          selector:@selector(applicationDidEnterBackground:)
-                              name:UIApplicationDidEnterBackgroundNotification
-                            object:nil];
+        [defaultCenter addObserver: self
+                          selector: @selector(applicationDidEnterBackground:)
+                              name: UIApplicationDidEnterBackgroundNotification
+                            object: nil];
     }
     return self;
 }
@@ -72,6 +72,7 @@
     IVSTextMetadataCue* textMetadataCue = (IVSTextMetadataCue*) cue;
     _onOutputCue(@{@"code": [NSNumber numberWithInt:0], @"msg": textMetadataCue.text});
 }
+
 
 - (void)player:(IVSPlayer *)player didChangeVideoSize:(CGSize)videoSize {
     if (_onChangeVideoSize) {

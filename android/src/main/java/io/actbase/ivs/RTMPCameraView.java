@@ -1,29 +1,29 @@
 package io.actbase.ivs;
 
 import android.content.Context;
-import android.hardware.Camera;
-import android.view.ViewGroup;
+import android.util.Log;
+import android.view.SurfaceHolder;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
-import com.github.faucamp.simplertmp.RtmpHandler;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.uimanager.events.RCTEventEmitter;
+import com.pedro.encoder.input.video.CameraHelper;
+import com.pedro.encoder.utils.CodecUtil;
+import com.pedro.rtplibrary.rtmp.RtmpCamera2;
+import com.pedro.rtplibrary.view.OpenGlView;
 
-import net.ossrs.yasea.SrsCameraView;
-import net.ossrs.yasea.SrsEncodeHandler;
-import net.ossrs.yasea.SrsPublisher;
-import net.ossrs.yasea.SrsRecordHandler;
+import net.ossrs.rtmp.ConnectCheckerRtmp;
 
-import java.io.IOException;
-import java.net.SocketException;
-
-public class RTMPCameraView extends FrameLayout implements RtmpHandler.RtmpListener,
-        SrsRecordHandler.SrsRecordListener, SrsEncodeHandler.SrsEncodeListener {
+public class RTMPCameraView extends FrameLayout implements ConnectCheckerRtmp, SurfaceHolder.Callback {
 
     private ReactContext context;
-    private SrsCameraView srsCameraView;
-    private SrsPublisher srsPublisher;
+    private RtmpCamera2 rtmpCamera2;
+    private OpenGlView openGlView;
+    private String rtmpUrl;
 
     private int mWidth = 720;
     private int mHeight = 1280;
@@ -32,160 +32,166 @@ public class RTMPCameraView extends FrameLayout implements RtmpHandler.RtmpListe
         super(context);
         this.context = (ReactContext) context;
 
-        srsCameraView = new SrsCameraView(context);
-        srsCameraView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        srsCameraView.setCameraCallbacksHandler(new SrsCameraView.CameraCallbacksHandler() {
-            @Override
-            public void onCameraParameters(Camera.Parameters params) {
-                //params.setFocusMode("custom-focus");
-                //params.setWhiteBalance("custom-balance");
-                //etc...
-            }
-        });
+        openGlView = new OpenGlView(context);
+        this.addView(openGlView, new LayoutParams(200, 200, 17));
 
-        srsPublisher = new SrsPublisher(srsCameraView);
-        srsPublisher.setEncodeHandler(new SrsEncodeHandler(this));
-        srsPublisher.setRtmpHandler(new RtmpHandler(this));
-//            srsPublisher.setRecordHandler(new SrsRecordHandler(this));
-        srsPublisher.setPreviewResolution(mWidth, mHeight);
-        srsPublisher.setOutputResolution(mHeight, mWidth); // 这里要和preview反过来
-        srsPublisher.setVideoHDMode();
-
-        this.addView(srsCameraView);
-
+        rtmpCamera2 = new RtmpCamera2(openGlView, this);
+        rtmpCamera2.setReTries(10);
+        openGlView.getHolder().addCallback(this);
     }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        srsPublisher.setPreviewResolution(right - left, bottom - top);
+        scaleToLayout();
+    }
+
+    private void scaleToLayout() {
+        int viewWidth = getMeasuredWidth();
+        int viewHeight = getMeasuredHeight();
+        float viewRatio = (float) viewHeight / (float) viewWidth;
+        float videoRatio = (float) mHeight / (float) mWidth;
+
+        int left = 0;
+        int top = 0;
+        int right = 0;
+        int bottom = 0;
+
+        if (viewRatio > videoRatio) {
+            // horizontal base
+            int r = (int) (viewHeight / videoRatio);
+            int g = (r - viewWidth) / 2;
+
+            left = -g;
+            right = viewWidth + g;
+            bottom = viewHeight;
+        } else {
+            // vertical base
+            int r = (int) (viewWidth * videoRatio);
+            int g = (r - viewHeight) / 2;
+
+            top = -g;
+            bottom = viewHeight + g;
+            right = viewWidth;
+        }
+
+        openGlView.layout(left, top, right, bottom);
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        srsPublisher.startCamera();
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        srsPublisher.stopCamera();
     }
 
     public void setFrontCamera(Boolean frontCamera) {
+        boolean isFront = rtmpCamera2.isFrontCamera();
+        if (isFront != frontCamera) {
+            rtmpCamera2.switchCamera();
+        }
+    }
 
-//        srsCameraView.getCamera()
+    public void setUri(String inputUrl) {
+        rtmpUrl = inputUrl;
+    }
+
+    public void setZoomScale(Integer zoomScale) {
+        rtmpCamera2.setZoom(zoomScale.floatValue());
+    }
+
+    public void start() {
+        if (rtmpCamera2.isStreaming()) return;
+        scaleToLayout();
+
+        rtmpCamera2.prepareVideo(mHeight, mWidth, 1200 * 1024);
+        rtmpCamera2.prepareAudio();
+        rtmpCamera2.startStream(rtmpUrl);
+    }
+
+    public void stop() {
+        if (!rtmpCamera2.isStreaming()) return;
+        rtmpCamera2.stopStream();
+    }
+
+
+    @Override
+    public void surfaceCreated(SurfaceHolder surfaceHolder) {
 
     }
 
     @Override
-    public void onRtmpConnecting(String msg) {
-
+    public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+        rtmpCamera2.startPreview(CameraHelper.Facing.BACK, mHeight, mWidth);
     }
 
     @Override
-    public void onRtmpConnected(String msg) {
-
+    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+        if (rtmpCamera2.isStreaming()) {
+            rtmpCamera2.stopStream();
+        }
+        rtmpCamera2.stopPreview();
     }
 
     @Override
-    public void onRtmpVideoStreaming() {
+    public void onConnectionSuccessRtmp() {
+        ReactContext reactContext = (ReactContext) getContext();
+        RCTEventEmitter emitter = reactContext.getJSModule(RCTEventEmitter.class);
 
+        WritableMap event = Arguments.createMap();
+        event.putInt("code", 2);
+        event.putString("msg", "RTMPCameraStart");
+        emitter.receiveEvent(getId(), "topChangeState", event);
     }
 
     @Override
-    public void onRtmpAudioStreaming() {
+    public void onConnectionFailedRtmp(String reason) {
+        ReactContext reactContext = (ReactContext) getContext();
+        RCTEventEmitter emitter = reactContext.getJSModule(RCTEventEmitter.class);
 
+        WritableMap event = Arguments.createMap();
+        event.putInt("code", 4);
+        event.putString("msg", reason);
+        emitter.receiveEvent(getId(), "topChangeState", event);
     }
 
     @Override
-    public void onRtmpStopped() {
-
+    public void onNewBitrateRtmp(long bitrate) {
     }
 
     @Override
-    public void onRtmpDisconnected() {
+    public void onDisconnectRtmp() {
+        ReactContext reactContext = (ReactContext) getContext();
+        RCTEventEmitter emitter = reactContext.getJSModule(RCTEventEmitter.class);
 
+        WritableMap event = Arguments.createMap();
+        event.putInt("code", 3);
+        event.putString("msg", "RTMPCameraStop");
+        emitter.receiveEvent(getId(), "topChangeState", event);
     }
 
     @Override
-    public void onRtmpVideoFpsChanged(double fps) {
+    public void onAuthErrorRtmp() {
+        ReactContext reactContext = (ReactContext) getContext();
+        RCTEventEmitter emitter = reactContext.getJSModule(RCTEventEmitter.class);
 
+        WritableMap event = Arguments.createMap();
+        event.putInt("code", 4);
+        event.putString("msg", "onAuthErrorRtmp");
+        emitter.receiveEvent(getId(), "topChangeState", event);
     }
 
     @Override
-    public void onRtmpVideoBitrateChanged(double bitrate) {
+    public void onAuthSuccessRtmp() {
+        ReactContext reactContext = (ReactContext) getContext();
+        RCTEventEmitter emitter = reactContext.getJSModule(RCTEventEmitter.class);
 
-    }
-
-    @Override
-    public void onRtmpAudioBitrateChanged(double bitrate) {
-
-    }
-
-    @Override
-    public void onRtmpSocketException(SocketException e) {
-
-    }
-
-    @Override
-    public void onRtmpIOException(IOException e) {
-
-    }
-
-    @Override
-    public void onRtmpIllegalArgumentException(IllegalArgumentException e) {
-
-    }
-
-    @Override
-    public void onRtmpIllegalStateException(IllegalStateException e) {
-
-    }
-
-    @Override
-    public void onNetworkWeak() {
-
-    }
-
-    @Override
-    public void onNetworkResume() {
-
-    }
-
-    @Override
-    public void onEncodeIllegalArgumentException(IllegalArgumentException e) {
-
-    }
-
-    @Override
-    public void onRecordPause() {
-
-    }
-
-    @Override
-    public void onRecordResume() {
-
-    }
-
-    @Override
-    public void onRecordStarted(String msg) {
-
-    }
-
-    @Override
-    public void onRecordFinished(String msg) {
-
-    }
-
-    @Override
-    public void onRecordIllegalArgumentException(IllegalArgumentException e) {
-
-    }
-
-    @Override
-    public void onRecordIOException(IOException e) {
-
+        WritableMap event = Arguments.createMap();
+        event.putInt("code", 1);
+        event.putString("msg", "RTMPCameraPending");
+        emitter.receiveEvent(getId(), "topChangeState", event);
     }
 }
