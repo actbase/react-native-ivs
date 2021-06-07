@@ -25,7 +25,7 @@
         [_screen setPlayer:[[IVSPlayer alloc] init]];
         [_screen setVideoGravity: AVLayerVideoGravityResizeAspectFill];
         [self addSubview:_screen];
-
+        
         NSNotificationCenter *defaultCenter = NSNotificationCenter.defaultCenter;
         [defaultCenter addObserver: self
                           selector: @selector(applicationDidEnterBackground:)

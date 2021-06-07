@@ -97,7 +97,9 @@ inline static NSString *formatedSpeed(float bytes, float elapsed_milli) {
 /** callback socket errorcode */
 - (void)liveSession:(nullable LFLiveSession *)session errorCode:(LFLiveSocketErrorCode)errorCode {
     NSLog(@"%@", [NSNumber numberWithInt:errorCode]);
-    _onFailWithError(@{@"code": [NSNumber numberWithInt:errorCode], @"msg": @"" });
+    if (_onFailWithError) {
+        _onFailWithError(@{@"code": [NSNumber numberWithInt:errorCode], @"msg": @"" });
+    }
 }
 
 #pragma mark -- Getter Setter

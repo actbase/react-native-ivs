@@ -31,11 +31,16 @@ const CameraView = React.forwardRef((props, ref) => {
   ref.current = refObject;
   const { onChangeState, ...viewProps } = props;
 
-  const handleChangeState = useCallback(({ nativeEvent }) => {
-    onChangeState?.(nativeEvent?.code, nativeEvent?.msg);
-  }, []);
+  const handleChangeState = useCallback(
+      ({ nativeEvent }) => {
+        onChangeState?.(nativeEvent?.code, nativeEvent?.msg);
+      },
+      [onChangeState],
+  );
 
-  return <RCTCameraView ref={camera} {...props} onChangeState={handleChangeState} />;
+  return (
+      <RCTCameraView ref={camera} {...props} onChangeState={handleChangeState} />
+  );
 });
 
 CameraView.propTypes = ViewPropTypes;
